@@ -31,27 +31,91 @@
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
-int main() {
-    // 1. Configuração Inicial (Setup):
-    // - Define o locale para português.
-    // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
-    // - Aloca a memória para o mapa do mundo e verifica se a alocação foi bem-sucedida.
-    // - Preenche os territórios com seus dados iniciais (tropas, donos, etc.).
-    // - Define a cor do jogador e sorteia sua missão secreta.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    // 2. Laço Principal do Jogo (Game Loop):
-    // - Roda em um loop 'do-while' que continua até o jogador sair (opção 0) ou vencer.
-    // - A cada iteração, exibe o mapa, a missão e o menu de ações.
-    // - Lê a escolha do jogador e usa um 'switch' para chamar a função apropriada:
-    //   - Opção 1: Inicia a fase de ataque.
-    //   - Opção 2: Verifica se a condição de vitória foi alcançada e informa o jogador.
-    //   - Opção 0: Encerra o jogo.
-    // - Pausa a execução para que o jogador possa ler os resultados antes da próxima rodada.
+#define MAX_TERRITORIOS 50
+#define TAM_STRING 100
 
-    // 3. Limpeza:
-    // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
+struct Territorio
+{
+    char nome[TAM_STRING];
+    char cor[TAM_STRING];
+    int tropas;
+};
+void LimparBufferEntrada()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+int main()
+{
+    struct Territorio Plants[MAX_TERRITORIOS];
+    int totalLivros = 0;
+    int opcao;
 
-    return 0;
+    do
+    {
+        printf("_______________________________________\n");
+        printf("\t Plants - PARTE 1\t\n");
+        printf("_______________________________________\n");
+        printf("1 - Cadastrar novo Territorios\n");
+        printf("2 - Listar todos os Territorios\n");
+        printf("0 - Sair\n");
+        printf("_______________________________________\n");
+        printf("Escolha uma opçao: ");
+
+        scanf("%d", &opcao);
+        LimparBufferEntrada();
+
+        switch (opcao)
+        {
+        case 1:
+            if (totalLivros > MAX_TERRITORIOS)
+            {
+                printf("limite maximo de livros atingindo!");
+            }
+            else
+            {
+                printf("--- Cadastro de Livro --- \n\n");
+                printf("Nome do Livro:");
+                fgets(Plants[totalLivros].nome, TAM_STRING, stdin);
+                printf("Nome do cor:");
+                fgets(Plants[totalLivros].cor, TAM_STRING, stdin);
+                printf("Numero de tropas:");
+                scanf("%d", &Plants[totalLivros].tropas);
+
+                totalLivros++;
+                printf("Cadastro bem sucedido!");
+            }
+
+            break;
+        case 2:
+            printf("--- Lista de Territorios ---\n");
+            if (totalLivros == 0)
+            {
+                printf("nao a Territorios\n");
+            }
+            else
+            {
+                for (size_t i = 0; i < totalLivros; i++)
+                {
+                    printf("Nome : %s\n", Plants[i].nome);
+                    printf("Cor : %s\n", Plants[i].cor);
+                    printf("Tropas : %d\n", Plants[i].tropas);
+                }
+            }
+
+            break;
+        case 0:
+            printf("saindo");
+            break;
+
+        default:
+            break;
+        }
+    } while (opcao != 0);
 }
 
 // --- Implementação das Funções ---
